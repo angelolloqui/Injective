@@ -104,8 +104,8 @@ static IJContext *DefaultContext = nil;
 - (void)registerOnAwakeFromNibForClass:(Class)klass
 {
 	Method methAwakeFromNib = class_getInstanceMethod(klass, @selector(awakeFromNib));
-	
-	IMP impOrigAwakeFromNib = method_getImplementation(methAwakeFromNib);
+	typedef void (*send_type)(void*, SEL);
+	send_type impOrigAwakeFromNib = (send_type)method_getImplementation(methAwakeFromNib);
 	
 	IMP impInjAwakeFromNib = imp_implementationWithBlock([[^(id b_self){
 		impOrigAwakeFromNib(b_self, @selector(awakeFromNib));
